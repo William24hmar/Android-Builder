@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - ".github/workflows/build.yml"
+      - "configs/*.config.json"
   workflow_dispatch:
   schedule:
     - cron: "0 11 * * 0"
@@ -18,11 +19,9 @@ jobs:
       CONFIGS: ${{ steps.generate-matrix.outputs.CONFIGS }}
       BUILD_DATE: ${{ steps.generate-builddate.outputs.BUILDDATE }}
     steps:
-      # This action checks-out your CONFIGS directory under $GITHUB_WORKSPACE, so your workflow can access it.
       - name: 😄 Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      # Match the configuration files in the CONFIGS directory, read the contents and merge them into an array.
       - name: 😆 Generate Matrix
         id: generate-matrix
         run: |
@@ -30,7 +29,6 @@ jobs:
           jq -s '[.[][]]' configs/*.config.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      # Set compile time.
       - name: ⏰ Set builddate
         id: generate-builddate
         run: echo "BUILDDATE=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
@@ -46,50 +44,31 @@ jobs:
       matrix:
         CONFIG: ${{ fromJSON(needs.Read-configuration.outputs.CONFIGS) }}
     env:
-      # Basic configuration
       WORKSPACE: ${{ github.workspace }}
       BUILD_DATE: "${{ needs.Read-configuration.outputs.BUILD_DATE }}"
-
-      # Kernel source configuration
       KERNEL_NAME: ${{ matrix.CONFIG.kernelSource.name }}
       KERNEL_REPO: ${{ matrix.CONFIG.kernelSource.repo }}
       KERNEL_BRANCH: ${{ matrix.CONFIG.kernelSource.branch }}
       KERNEL_DEVICE: ${{ matrix.CONFIG.kernelSource.device }}
       KERNEL_DEFCONFIG_PATH: ${{ matrix.CONFIG.kernelSource.defconfig }}
-
-      # Whether to use ccache to speed up compilation
       ENABLE_CCACHE: ${{ matrix.CONFIG.enableCcache }}
-
-      # Whether to use ANYKERNEL3 packaged flash package
       USE_ANYKERNEL3: ${{ matrix.CONFIG.AnyKernel3.use }}
-
-      # Whether to publish
       CONFIRM_RELEASE: ${{ matrix.CONFIG.AnyKernel3.release }}
-
-      # Whether to enable KernelSU
       ENABLE_KERNELSU: ${{ matrix.CONFIG.KSU.enable }}
       KERNELSU_VARIANT: ${{ matrix.CONFIG.KSU.Variant }}
       ENABLE_KERNELSU_ExtPatch: ${{ matrix.CONFIG.KSU.ExtPatch }}
-
-      # Whether to enable LXC docker
       ENABLE_LXC: ${{ matrix.CONFIG.enableLXC }}
-
-      # Whether to enable Baseband_Guard
       ENABLE_BBG: ${{ matrix.CONFIG.enableBBG }}
-
-      # Set output & ccache directory
       OUT_DIR: "${{ github.workspace }}/out"
       CCACHE_DIR: "${{ github.workspace }}/out"
     steps:
-      # Set swap space
       - name: 📐 Set swap to 10G
         uses: pierotofy/set-swap-space@master
         with:
           swap-size-gb: 10
 
-      # This action checks-out your CONFIG directory under $GITHUB_WORKSPACE, so your workflow can access it.
       - name: 😄 Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set git config
         run: |
@@ -473,25 +452,4 @@ jobs:
             fi
           fi
 
-          cd AnyKernel3/
-          zip -q -r "${{ env.ANYKERNEL3_FILE }}.zip" *
-
-      - name: "💾 Upload AnyKernel3 image => (${{ env.BUILD_DATE }})"
-        env:
-          ANYKERNEL3_FILE: "AnyKernel3-${{ env.KERNEL_NAME }}-${{env.KERNEL_DEVICE}}-${{ env.BUILD_DATE }}"
-        uses: actions/upload-artifact@v5
-        if: ${{ env.USE_ANYKERNEL3 == 'true' }}
-        with:
-          name: "${{ env.ANYKERNEL3_FILE }}"
-          path: AnyKernel3/*
-
-      - name: 🧧 Create GitHub Release => (${{ env.BUILD_DATE }})
-        env:
-          ANYKERNEL3_FILE: "${{ env.WORKSPACE }}/AnyKernel3-${{ env.KERNEL_NAME }}-${{env.KERNEL_DEVICE}}-${{ env.BUILD_DATE }}"
-        continue-on-error: true
-        uses: softprops/action-gh-release@v2
-        if: ${{ env.USE_ANYKERNEL3 == 'true' && env.CONFIRM_RELEASE == 'true' }}
-        with:
-          tag_name: v${{ env.BUILD_DATE }}.${{ github.run_number }}
-          files: "${{ env.ANYKERNEL3_FILE }}.zip"
-          generate_release_notes: true
+     
