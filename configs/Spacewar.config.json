@@ -1,7 +1,7 @@
 {
   "kernelSource": {
     "name": "android_kernel_nothing_sm7325",
-    "repo": "https://github.com/William24hmar/android_kernel_nothing_sm7325.git",
+    "repo": "https://github.com/William24hmar/android_kernel_nothing_sm7325",
     "branch": "Luna",
     "device": "spacewar",
     "defconfig": "vendor/lahaina-qgki_defconfig"
