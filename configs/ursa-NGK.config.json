@@ -1,55 +1,68 @@
 [
   {
     "kernelSource": {
-      "name": "NGK_android_kernel_xiaomi_sdm845",
-      "repo": "https://github.com/Xiaomi-sdm845-KSU/NGK_android_kernel_xiaomi_sdm845",
-      "branch": "t-caf-ksu",
-      "device": "ursa",
-      "defconfig": "nogravity-ursa_defconfig"
+      "name": "android_kernel_nothing_sm7325",
+      "repo": "https://github.com/William24hmar/android_kernel_nothing_sm7325",
+      "branch": "Luna",
+      "device": "NP1",
+      "defconfig": "vendor/lahaina-qgki_defconfig"
       },
-     "KSU": {
-      "enable": true,
-      "ExtPatch": false,
-      "Variant": "ycrksu"
+     "toolchains": [
+    {
+      "name": "clang",
+      "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/8d870a6273b05545d5beb1318b473705dd3c3270/clang-r584948b.tar.gz",
+      "binaryEnv": [
+        "bin"
+      ]
     },
-
-    "enableCcache": true,
-
-    "enableLXC": false,
-    "toolchains": [
-      {
-        "repo": "https://github.com/Xiaomi-sdm845-KSU/android-kernel-tools",
-        "branch": "clang13",
-        "name": "clang13",
-        "binaryEnv": ["./bin"]
-      }
-    ],
-    "params": {
-      "ARCH": "arm64",
-      "CC": "clang13/clang/host/linux-x86/clang-r428724/bin/clang",
-      "externalCommands": {
-        "CROSS_COMPILE": "clang13/linaro-gcc-4.9/aarch64-linux-gnu/bin/aarch64-linux-gnu-",
-        "CROSS_COMPILE_ARM32": "clang13/linaro-gcc-4.9/arm-linux-gnueabi/bin/arm-linux-gnueabi-",
-        "AR": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-ar",
-        "NM": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-nm",
-        "OBJCOPY": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-objcopy",
-        "OBJDUMP": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-objdump",
-        "READELF": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-readelf",
-        "OBJSIZE": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-size",
-        "STRIP": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-strip",
-        "HOSTCC": "clang13/clang/host/linux-x86/clang-r428724/bin/clang",
-        "HOSTCXX": "clang13/clang/host/linux-x86/clang-r428724/bin/clang++",
-        "LLVM_AR": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-ar",
-        "LLVM_DIS": "clang13/clang/host/linux-x86/clang-r428724/bin/llvm-dis"
-      }
+    {
+      "name": "gcc-arm64",
+      "url": "https://github.com/mvaisakh/gcc-build/releases/download/11012026/eva-gcc-arm64-11012026.tar.gz",
+      "binaryEnv": [
+        "bin"
+      ]
     },
-    "AnyKernel3": {
-      "use": true,
-      "release": true,
-      "custom": {
-        "repo": "https://github.com/Xiaomi-sdm845-KSU/AnyKernel3",
-        "branch": "master"
+    {
+      "name": "gcc-arm32",
+      "url": "https://github.com/mvaisakh/gcc-build/releases/download/11012026/eva-gcc-arm-11012026.tar.gz",
+      "binaryEnv": [
+        "bin"
+      ]
+    }
+  ],
+  "params": {
+    "ARCH": "arm64",
+    "CC": "clang/bin/clang",
+    "externalCommands": {
+      "CLANG_TRIPLE": "aarch64-linux-gnu-",
+      "CROSS_COMPILE": "gcc-arm64/bin/aarch64-elf-",
+      "CROSS_COMPILE_ARM32": "gcc-arm32/bin/arm-eabi-",
+      "LLVM": "1",
+      "LLVM_IAS": "1",
+      "LD": "clang/bin/ld.lld",
+      "AR": "clang/bin/llvm-ar",
+      "NM": "clang/bin/llvm-nm",
+      "OBJCOPY": "clang/bin/llvm-objcopy",
+      "OBJDUMP": "clang/bin/llvm-objdump",
+      "STRIP": "clang/bin/llvm-strip"
       }
+  },
+  "enableCcache": true,
+  "enableKernelSU": false,
+  "enableLXC": false,
+  "enableBBG": false,
+  "AnyKernel3": {
+    "use": true,
+    "release": false,
+    "custom": {
+      "repo": "https://github.com/William24hmar/AnyKernel3.git",
+      "branch": "master"
+    }
+  },
+  "KSU": {
+    "enable": false,
+    "Variant": "official",
+    "ExtPatch": false
     }
   }
 ]
