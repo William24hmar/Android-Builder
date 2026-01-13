@@ -8,27 +8,19 @@
   },
   "toolchains": [
     {
-      "name": "clang",
-      "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/8d870a6273b05545d5beb1318b473705dd3c3270/clang-r584948b.tar.gz",
-      "binaryEnv": [
-        "bin"
-      ]
+    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/8d870a6273b05545d5beb1318b473705dd3c3270/clang-r584948b.tar.gz",
+    "name": "clang",
+    "binPath": ["bin"]
+        
     },
     {
-      "name": "gcc-arm64",
-      "url": "https://github.com/mvaisakh/gcc-build/releases/download/11012026/eva-gcc-arm64-11012026.tar.gz",
-      "binaryEnv": [
-        "bin"
-      ]
+      "repo": "https://github.com/mvaisakh/gcc-build",
+      "branch": "main",
+      "name": "gcc",
+      "binPath": ["bin"]
+    
     },
     {
-      "name": "gcc-arm32",
-      "url": "https://github.com/mvaisakh/gcc-build/releases/download/11012026/eva-gcc-arm-11012026.tar.gz",
-      "binaryEnv": [
-        "bin"
-      ]
-    }
-  ],
   "params": {
     "ARCH": "arm64",
     "CC": "clang/bin/clang",
@@ -44,8 +36,7 @@
       "OBJCOPY": "clang/bin/llvm-objcopy",
       "OBJDUMP": "clang/bin/llvm-objdump",
       "STRIP": "clang/bin/llvm-strip"
-    }
-  },
+    
   "enableCcache": true,
   "enableKernelSU": false,
   "enableLXC": false,
