@@ -249,6 +249,10 @@ jobs:
             echo "KSU_VARIANT=tiann/KernelSU" >> $GITHUB_OUTPUT
             echo "KSU_BRANCH=v0.9.5" >> $GITHUB_OUTPUT # the last one that support nongki
             echo "Using Official KernelSU variant."
+          elif [ "$input" == "RapliVx" ]; then
+            echo "KSU_VARIANT=RapliVx/KernelSU" >> $GITHUB_OUTPUT
+            echo "KSU_BRANCH=master" >> $GITHUB_OUTPUT
+            echo "Using RapliVx variant."
           elif [ "$input" == "rksu" ]; then
             echo "KSU_VARIANT=rsuntk/KernelSU" >> $GITHUB_OUTPUT
             echo "KSU_BRANCH=main" >> $GITHUB_OUTPUT
