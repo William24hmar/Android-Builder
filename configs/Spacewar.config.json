@@ -59,8 +59,8 @@
     }
   },
   "KSU": {
-    "enable": false,
-    "Variant": "official",
+    "enable": true,
+    "Variant": "ycrksu",
     "ExtPatch": false
   }
 }
