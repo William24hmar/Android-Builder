@@ -1,66 +1,51 @@
-{
-  "kernelSource": {
-    "name": "android_kernel_nothing_sm7325",
-    "repo": "https://github.com/William24hmar/android_kernel_nothing_sm7325",
-    "branch": "Luna",
-    "device": "spacewar",
-    "defconfig": "vendor/lahaina-qgki_defconfig"
-  },
-  "toolchains": [
+[
     {
-      "name": "clang",
-      "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/8d870a6273b05545d5beb1318b473705dd3c3270/clang-r584948b.tar.gz",
-      "binaryEnv": [
-        "bin"
-      ]
-    },
-    {
-      "name": "gcc-arm64",
-      "url": "https://github.com/mvaisakh/gcc-build/releases/download/11012026/eva-gcc-arm64-11012026.tar.gz",
-      "binaryEnv": [
-        "bin"
-      ]
-    },
-    {
-      "name": "gcc-arm32",
-      "url": "https://github.com/mvaisakh/gcc-build/releases/download/11012026/eva-gcc-arm-11012026.tar.gz",
-      "binaryEnv": [
-        "bin"
-      ]
+        "kernelSource": { 
+            "name": "android_kernel_nothing_sm7325", 
+            "repo": "https://github.com/William24hmar/android_kernel_nothing_sm7325", 
+            "branch": "Luna", 
+            "device": "spacewar", 
+            "defconfig": "vendor/lahaina-qgki_defconfig" 
+          }, 
+          "toolchains": [ 
+            {  
+               "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/8d870a6273b05545d5beb1318b473705dd3c3270/clang-r584948b.tar.gz",  
+               "name": "clang",  
+               "binaryEnv": [
+                "bin"
+            ]  
+            } 
+          ], 
+          "enableCcache": true, 
+          "params": { 
+            "ARCH": "arm64", 
+            "CC": "clang/bin/clang", 
+            "externalCommands": { 
+              "CROSS_COMPILE": "aarch64-linux-gnu-", 
+              "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-", 
+              "AS": "clang/bin/llvm-as", 
+              "AR": "clang/bin/llvm-ar",  
+              "NM":"clang/bin/llvm-nm" ,  
+              "OBJCOPY":"clang/bin/llvm-objcopy",  
+              "OBJDUMP":"clang/bin/llvm-objdump",  
+              "STRIP":"clang/bin/llvm-strip",  
+              "LD":"clang/bin/ld.lld", 
+              "LTO": "thin" 
+            } 
+          }, 
+          "AnyKernel3": { 
+            "use": true, 
+            "release": true,
+            "custom": {
+              "repo": "https://github.com/William24hmar/AnyKernel3.git",
+              "branch": "master"
+            }
+          },
+          "KSU": {
+            "enable": true,
+            "ExtPatch": true,
+            "Variant": "ycrksu"
+          },
+          "enableLXC": false        
     }
-  ],
-  "params": {
-    "ARCH": "arm64",
-    "CC": "clang/bin/clang",
-    "externalCommands": {
-      "CLANG_TRIPLE": "aarch64-linux-gnu-",
-      "CROSS_COMPILE": "gcc-arm64/bin/aarch64-elf-",
-      "CROSS_COMPILE_ARM32": "gcc-arm32/bin/arm-eabi-",
-      "LLVM": "1",
-      "LLVM_IAS": "1",
-      "LD": "clang/bin/ld.lld",
-      "AR": "clang/bin/llvm-ar",
-      "NM": "clang/bin/llvm-nm",
-      "OBJCOPY": "clang/bin/llvm-objcopy",
-      "OBJDUMP": "clang/bin/llvm-objdump",
-      "STRIP": "clang/bin/llvm-strip"
-    }
-  },
-  "enableCcache": true,
-  "enableKernelSU": false,
-  "enableLXC": false,
-  "enableBBG": false,
-  "AnyKernel3": {
-    "use": true,
-    "release": false,
-    "custom": {
-      "repo": "https://github.com/William24hmar/AnyKernel3.git",
-      "branch": "master"
-    }
-  },
-  "KSU": {
-    "enable": true,
-    "Variant": "ycrksu",
-    "ExtPatch": false
-  }
-}
+]
